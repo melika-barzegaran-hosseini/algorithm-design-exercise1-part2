@@ -110,39 +110,60 @@ public class Graph
 
     public ArrayList<Vertex> bfs(Vertex vertex)
     {
-        ArrayList<Vertex> bfs = new ArrayList<>();
-        LinkedList<Vertex> queue = new LinkedList<>();
+        ArrayList<Vertex> bfs = null;
 
-        vertex.setVisited();
-        queue.addFirst(vertex);
-        bfs.add(vertex);
-
-        while(!queue.isEmpty())
+        if(!vertex.isVisited())
         {
-            Vertex current = queue.removeLast();
+            bfs = new ArrayList<>();
+            LinkedList<Vertex> queue = new LinkedList<>();
 
-            ArrayList<Vertex> neighbors = new ArrayList<>();
-            for(Edge edge : current.getIncomingEdges())
-            {
-                neighbors.add(edge.getStartingVertex());
-            }
-            for(Edge edge : current.getOutgoingEdges())
-            {
-                neighbors.add(edge.getEndingVertex());
-            }
+            vertex.setVisited();
+            queue.addFirst(vertex);
+            bfs.add(vertex);
 
-            for(Vertex neighbor : neighbors)
+            while(!queue.isEmpty())
             {
-                if(!neighbor.isVisited())
+                Vertex current = queue.removeLast();
+
+                ArrayList<Vertex> neighbors = new ArrayList<>();
+                for(Edge edge : current.getIncomingEdges())
                 {
-                    neighbor.setVisited();
-                    queue.addFirst(neighbor);
-                    bfs.add(neighbor);
+                    neighbors.add(edge.getStartingVertex());
+                }
+                for(Edge edge : current.getOutgoingEdges())
+                {
+                    neighbors.add(edge.getEndingVertex());
+                }
+
+                for(Vertex neighbor : neighbors)
+                {
+                    if(!neighbor.isVisited())
+                    {
+                        neighbor.setVisited();
+                        queue.addFirst(neighbor);
+                        bfs.add(neighbor);
+                    }
                 }
             }
         }
 
         return bfs;
+    }
+
+    public ArrayList<ArrayList<Vertex>> getConnectedComponents()
+    {
+        ArrayList<ArrayList<Vertex>> connectedComponents = new ArrayList<>();
+
+        for(Vertex vertex : vertices)
+        {
+            ArrayList<Vertex> vertices = bfs(vertex);
+            if(vertices != null)
+            {
+                connectedComponents.add(vertices);
+            }
+        }
+
+        return connectedComponents;
     }
 
     @Override
@@ -168,11 +189,17 @@ public class Graph
 
         System.out.println(graph.toString());
 
-        ArrayList<Vertex> bfs = graph.bfs(graph.vertices.get(0));
-        System.out.print("bfs: ");
-        for(Vertex vertex : bfs)
+        System.out.println("connected components: ");
+        ArrayList<ArrayList<Vertex>> connectedComponents = graph.getConnectedComponents();
+        System.out.println("number of connected components = " + connectedComponents.size());
+        for(ArrayList<Vertex> connectedComponent : connectedComponents)
         {
-            System.out.print(vertex.getName() + " ");
+            System.out.print("component " + connectedComponents.indexOf(connectedComponent) + "th: ");
+            for(Vertex vertex : connectedComponent)
+            {
+                System.out.print(vertex.getName() + " ");
+            }
+            System.out.println();
         }
     }
 }
