@@ -166,6 +166,23 @@ public class Graph
         return connectedComponents;
     }
 
+    public int getBiggestConnectedComponent(ArrayList<ArrayList<Vertex>> connectedComponents)
+    {
+        int index = 0;
+        int max = connectedComponents.get(0).size();
+        for(int counter = 1; counter < connectedComponents.size(); counter++)
+        {
+            int sizeOfCurrentComponent = connectedComponents.get(counter).size();
+            if(max < sizeOfCurrentComponent)
+            {
+                index = counter;
+                max = sizeOfCurrentComponent;
+            }
+        }
+
+        return index;
+    }
+
     @Override
     public String toString()
     {
@@ -201,5 +218,8 @@ public class Graph
             }
             System.out.println();
         }
+
+        System.out.println("biggest component is " + graph.getBiggestConnectedComponent(connectedComponents) + "th " +
+                "component.");
     }
 }
