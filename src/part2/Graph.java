@@ -4,6 +4,12 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+/**
+ * Represents a graph.
+ * It is used to obtain the biggest connected component in a peer-to-peer network.
+ *
+ * @author melika barzegaran hosseini
+ */
 public class Graph
 {
     private ArrayList<Vertex> vertices;
