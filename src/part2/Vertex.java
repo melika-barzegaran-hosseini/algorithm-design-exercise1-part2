@@ -69,7 +69,6 @@ public class Vertex
             to.add(edge.getEndingVertex().getName());
         }
 
-        return "(name = " + name + ", incoming edges from = " + from + ", outgoing edges to = " + to + ", visited = "
-                + visited + ")";
+        return "(name = " + name + ", incoming edges from = " + from + ", outgoing edges to = " + to + ")";
     }
 }
