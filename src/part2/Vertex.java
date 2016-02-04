@@ -49,6 +49,11 @@ public class Vertex
         outgoingEdges.add(edge);
     }
 
+    public void setVisited()
+    {
+        this.visited = true;
+    }
+
     @Override
     public String toString()
     {

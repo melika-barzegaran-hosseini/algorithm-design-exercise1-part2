@@ -2,6 +2,7 @@ package part2;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class Graph
 {
@@ -107,6 +108,43 @@ public class Graph
         }
     }
 
+    public ArrayList<Vertex> bfs(Vertex vertex)
+    {
+        ArrayList<Vertex> bfs = new ArrayList<>();
+        LinkedList<Vertex> queue = new LinkedList<>();
+
+        vertex.setVisited();
+        queue.addFirst(vertex);
+        bfs.add(vertex);
+
+        while(!queue.isEmpty())
+        {
+            Vertex current = queue.removeLast();
+
+            ArrayList<Vertex> neighbors = new ArrayList<>();
+            for(Edge edge : current.getIncomingEdges())
+            {
+                neighbors.add(edge.getStartingVertex());
+            }
+            for(Edge edge : current.getOutgoingEdges())
+            {
+                neighbors.add(edge.getEndingVertex());
+            }
+
+            for(Vertex neighbor : neighbors)
+            {
+                if(!neighbor.isVisited())
+                {
+                    neighbor.setVisited();
+                    queue.addFirst(neighbor);
+                    bfs.add(neighbor);
+                }
+            }
+        }
+
+        return bfs;
+    }
+
     @Override
     public String toString()
     {
@@ -121,13 +159,20 @@ public class Graph
         {
             message.append(edge).append("\n");
         }
-        message.setLength(message.length() - 1);
         return message.toString();
     }
 
     public static void main(String args[])
     {
         Graph graph = new Graph("testcases/test.txt");
+
         System.out.println(graph.toString());
+
+        ArrayList<Vertex> bfs = graph.bfs(graph.vertices.get(0));
+        System.out.print("bfs: ");
+        for(Vertex vertex : bfs)
+        {
+            System.out.print(vertex.getName() + " ");
+        }
     }
 }
